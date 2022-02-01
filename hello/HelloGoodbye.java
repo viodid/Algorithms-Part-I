@@ -4,7 +4,6 @@
  *  Last modified:     October 16, 1842
  **************************************************************************** */
 
-
 public class HelloGoodbye {
     public static void main(String[] args) {
         int arguments = args.length;
