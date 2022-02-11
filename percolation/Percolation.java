@@ -4,12 +4,11 @@
  *  Last modified:     1/1/2019
  **************************************************************************** */
 
-import edu.princeton.cs.algs4.QuickUnionUF;
-
 public class Percolation {
 
     private final int n;
-    private int[] grid;
+    private boolean[][] grid;
+    private MyQuickUnionUF[] array;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -18,11 +17,13 @@ public class Percolation {
         }
 
         this.n = n;
-        this.grid = new int[this.n * this.n];
+        this.grid = new boolean[n][n];
+        this.array = new MyQuickUnionUF[n * n];
 
-        for (int i = 0; i < n * n; i++) {
-            // -1 as 'null' type
-            this.grid[i] = -1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                this.grid[i][j] = false;
+            }
         }
     }
 
@@ -58,7 +59,7 @@ public class Percolation {
     }
 
     private boolean checkRange(int row, int column) {
-        if (row > this.n || column > this.n) {
+        if (row >= this.n || column >= this.n) {
             return true;
         }
         return false;
@@ -67,15 +68,16 @@ public class Percolation {
     public static void main(String[] args) {
         Percolation test = new Percolation(Integer.parseInt(args[0]));
         // test.isFull(4, 5);
-        for (int i = 0; i < test.grid.length; i++) {
-            System.out.print(test.grid[i]);
-        }
-        // System.out.print(test.grid);
+        // for (int i = 0; i < test.grid.length; i++) {
+        //     System.out.print(test.grid[i]);
+        // }
+        System.out.print(test.grid.length);
 
-        QuickUnionUF test2 = new QuickUnionUF(test.grid.length);
-        test2.union(1, 2);
+        // MyQuickUnionUF test2 = new MyQuickUnionUF(test.grid.length);
+        test.array.union(4, 2);
         for (int i = 0; i < test.grid.length; i++) {
-            System.out.print(test2.id[i]);
+            System.out.print(test.array[i]);
+            System.out.print('\n');
         }
     }
 }
