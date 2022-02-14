@@ -40,23 +40,37 @@ public class Percolation {
         if (checkRange(row, col)) {
             throw new IllegalArgumentException("Out of range");
         }
+
         this.grid[row - 1][col - 1] = true;
-        // row -= 1;
-        // col -= 1;
+        int mapNum = mapGridToArr(row, col);
+
         for (int i = -1; i < 2; i += 2) {
-            if (this.isOpen(row + i, col) && !this.checkRange(row + i, col)) {
-                this.array.union(row + i, col);
+            System.out.print(i);
+            System.out.print("\n");
+            if (this.isOpen(row + i, col)) {
+                int mapToNum = mapGridToArr(row + i, col);
+                System.out.print(mapNum);
+                System.out.print("\n");
+                System.out.print(mapToNum);
+                System.out.print("\n");
+                this.array.union(mapNum, mapToNum);
             }
-            if (this.isOpen(row, col + i) && !this.checkRange(row, col + i)) {
-                this.array.union(row, col + i);
+            if (this.isOpen(row, col + i)) {
+                int mapToNum = mapGridToArr(row, col + i);
+                System.out.print(mapToNum);
+                System.out.print("\n");
+                System.out.print(mapNum);
+                System.out.print("\n");
+                this.array.union(mapNum, mapToNum);
             }
+
         }
     }
 
     public boolean isOpen(int row, int col) {
-        // if (checkRange(row, col)) {
-        //     throw new IllegalArgumentException("Out of range");
-        // }
+        if (checkRange(row, col)) {
+            return false;
+        }
         return this.grid[row - 1][col - 1];
     }
 
@@ -83,7 +97,9 @@ public class Percolation {
     }
 
     private boolean checkRange(int row, int column) {
-        if (row > this.n || column > this.n) {
+        row -= 1;
+        column -= 1;
+        if (row >= this.n || column >= this.n || row < 0 || column < 0) {
             return true;
         }
         return false;
@@ -102,7 +118,9 @@ public class Percolation {
 
         test.open(2, 2);
         test.open(3, 2);
-        for (int i = 0; i < test.grid.length; i++) {
+        test.open(3, 3);
+        
+        for (int i = 0; i < test.array.id.length; i++) {
             System.out.print(test.array.id[i]);
             System.out.print('\n');
         }
