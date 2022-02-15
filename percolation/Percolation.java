@@ -9,6 +9,7 @@ public class Percolation {
     private final int n;
     private boolean[][] grid;
     private MyQuickUnionUF array;
+    private int openSites = 0;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -40,27 +41,17 @@ public class Percolation {
         if (checkRange(row, col)) {
             throw new IllegalArgumentException("Out of range");
         }
-
+        this.openSites += 1;
         this.grid[row - 1][col - 1] = true;
         int mapNum = mapGridToArr(row, col);
 
         for (int i = -1; i < 2; i += 2) {
-            System.out.print(i);
-            System.out.print("\n");
             if (this.isOpen(row + i, col)) {
                 int mapToNum = mapGridToArr(row + i, col);
-                System.out.print(mapNum);
-                System.out.print("\n");
-                System.out.print(mapToNum);
-                System.out.print("\n");
                 this.array.union(mapNum, mapToNum);
             }
             if (this.isOpen(row, col + i)) {
                 int mapToNum = mapGridToArr(row, col + i);
-                System.out.print(mapToNum);
-                System.out.print("\n");
-                System.out.print(mapNum);
-                System.out.print("\n");
                 this.array.union(mapNum, mapToNum);
             }
 
@@ -75,25 +66,19 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        if (checkRange(row, col)) {
-            throw new IllegalArgumentException("Out of range");
-        }
-        // Boilerplate
-        MyQuickUnionUF arr = new MyQuickUnionUF(this.n * this.n);
-        for (int i = 0; i < this.n; i++) {
-            arr.id[i] = -1;
-        }
-
         int mapNum = mapGridToArr(row, col);
-        return arr.connected(-1, mapNum);
+        return this.array.id[mapNum] == -1;
     }
 
     public int numberOfOpenSites() {
-        return 0;
+        return this.openSites;
     }
 
     public boolean percolates() {
-        return true;
+        for (int i = 1; i <= this.n; i++) {
+            if (this.array.connected((this.n * this.n) - i, 0)) return true;
+        }
+        return false;
     }
 
     private boolean checkRange(int row, int column) {
@@ -112,17 +97,14 @@ public class Percolation {
 
     public static void main(String[] args) {
         Percolation test = new Percolation(Integer.parseInt(args[0]));
-        // for (int i = 0; i < test.grid.length; i++) {
-        //     System.out.print(test.grid[i]);
-        // }
-
         test.open(2, 2);
-        test.open(3, 2);
+        // test.open(3, 2);
         test.open(3, 3);
-        
+        test.open(1, 2);
         for (int i = 0; i < test.array.id.length; i++) {
             System.out.print(test.array.id[i]);
             System.out.print('\n');
         }
+        System.out.print(test.percolates());
     }
 }
