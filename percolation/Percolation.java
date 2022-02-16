@@ -96,11 +96,14 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-        Percolation test = new Percolation(Integer.parseInt(args[0]));
+        // Percolation test = new Percolation(Integer.parseInt(args[0]));
+        Percolation test = new Percolation(4);
+        test.open(4, 1);
+        test.open(3, 1);
+        test.open(2, 1);
+        test.open(1, 1);
         test.open(2, 2);
-        // test.open(3, 2);
-        test.open(3, 3);
-        test.open(1, 2);
+        test.open(3, 2);
         for (int i = 0; i < test.array.id.length; i++) {
             System.out.print(test.array.id[i]);
             System.out.print('\n');
