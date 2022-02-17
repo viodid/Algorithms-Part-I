@@ -4,11 +4,13 @@
  *  Last modified:     1/1/2019
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 public class Percolation {
 
     private final int n;
     private boolean[][] grid;
-    private MyQuickUnionUF array;
+    private WeightedQuickUnionUF array;
     private int openSites = 0;
 
     // creates n-by-n grid, with all sites initially blocked
@@ -19,14 +21,10 @@ public class Percolation {
 
         this.n = n;
         this.grid = new boolean[n][n];
-        this.array = new MyQuickUnionUF(n * n);
+        this.array = new WeightedQuickUnionUF(n * n);
 
-        for (int i = 0; i < this.n; i++) {
-            this.array.id[i] = -1;
-        }
-
-        for (int i = n * n - 1; i >= n * n - n; i--) {
-            this.array.id[i] = n * n;
+        for (int i = 1; i < this.n; i++) {
+            this.array.union(0, i);
         }
 
         for (int i = 0; i < n; i++) {
@@ -66,8 +64,11 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
+        // check whether the spot isOpen
+        if (!isOpen(row, col)) return false;
         int mapNum = mapGridToArr(row, col);
-        return this.array.id[mapNum] == -1;
+        if (this.array.find(mapNum) == 0) return true;
+        return false;
     }
 
     public int numberOfOpenSites() {
@@ -76,7 +77,7 @@ public class Percolation {
 
     public boolean percolates() {
         for (int i = 1; i <= this.n; i++) {
-            if (this.array.connected((this.n * this.n) - i, 0)) return true;
+            if (this.array.find((this.n * this.n) - i) == 0) return true;
         }
         return false;
     }
@@ -96,18 +97,7 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-        // Percolation test = new Percolation(Integer.parseInt(args[0]));
-        Percolation test = new Percolation(4);
-        test.open(4, 1);
-        test.open(3, 1);
-        test.open(2, 1);
-        test.open(1, 1);
-        test.open(2, 2);
-        test.open(3, 2);
-        for (int i = 0; i < test.array.id.length; i++) {
-            System.out.print(test.array.id[i]);
-            System.out.print('\n');
-        }
+        Percolation test = new Percolation(3);
         System.out.print(test.percolates());
     }
 }

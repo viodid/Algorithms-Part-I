@@ -38,20 +38,16 @@ public class PercolationVisualizer {
         int opened = 0;
         for (int row = 1; row <= n; row++) {
             for (int col = 1; col <= n; col++) {
-
-                if (perc.isOpen(row, col)) {
-                    if (perc.isFull(row, col)) {
-                        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-                        opened++;
-                    }
-                    else {
-                        StdDraw.setPenColor(StdDraw.WHITE);
-                        opened++;
-                    }
+                if (perc.isFull(row, col)) {
+                    StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+                    opened++;
                 }
-                else {
+                else if (perc.isOpen(row, col)) {
+                    StdDraw.setPenColor(StdDraw.WHITE);
+                    opened++;
+                }
+                else
                     StdDraw.setPenColor(StdDraw.BLACK);
-                }
                 StdDraw.filledSquare(col - 0.5, n - row + 0.5, 0.45);
             }
         }
@@ -87,4 +83,3 @@ public class PercolationVisualizer {
         }
     }
 }
-
