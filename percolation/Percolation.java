@@ -24,6 +24,7 @@ public class Percolation {
         this.array = new WeightedQuickUnionUF(n * n);
 
         for (int i = 1; i < this.n; i++) {
+            // Union the first row to root 0
             this.array.union(0, i);
         }
 
@@ -39,7 +40,7 @@ public class Percolation {
         if (checkRange(row, col)) {
             throw new IllegalArgumentException("Out of range");
         }
-        this.openSites += 1;
+        this.openSites++;
         this.grid[row - 1][col - 1] = true;
         int mapNum = mapGridToArr(row, col);
 
@@ -76,8 +77,10 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        int rootPercolates = this.array.find(0);
         for (int i = 1; i <= this.n; i++) {
-            if (this.array.find((this.n * this.n) - i) == 0) return true;
+            // Last row of the grid
+            if (this.array.find((this.n * this.n) - i) == rootPercolates) return true;
         }
         return false;
     }
