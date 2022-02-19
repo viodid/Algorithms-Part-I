@@ -40,8 +40,11 @@ public class Percolation {
         if (checkRange(row, col)) {
             throw new IllegalArgumentException("Out of range");
         }
-        this.openSites++;
-        this.grid[row - 1][col - 1] = true;
+        if (!isOpen(row, col)) {
+            this.openSites++;
+            this.grid[row - 1][col - 1] = true;
+        }
+
         int mapNum = mapGridToArr(row, col);
 
         for (int i = -1; i < 2; i += 2) {
