@@ -10,7 +10,7 @@ public class Percolation {
 
     private final int n;
     private boolean[][] grid;
-    private WeightedQuickUnionUF array;
+    private final WeightedQuickUnionUF array;
     private int openSites = 0;
 
     // creates n-by-n grid, with all sites initially blocked
@@ -71,7 +71,7 @@ public class Percolation {
         // check whether the spot isOpen
         if (!isOpen(row, col)) return false;
         int mapNum = mapGridToArr(row, col);
-        if (this.array.find(mapNum) == 0) return true;
+        if (this.array.find(mapNum) == this.array.find(0)) return true;
         return false;
     }
 
@@ -80,6 +80,10 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        if (n == 1) {
+            if (isOpen(1, 1)) return true;
+            else return false;
+        }
         int rootPercolates = this.array.find(0);
         for (int i = 1; i <= this.n; i++) {
             // Last row of the grid
